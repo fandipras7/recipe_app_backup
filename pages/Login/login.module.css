@@ -1,0 +1,16 @@
+.bg {
+  height: 100%;
+  background-color: red;
+}
+
+.bg img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.logo {
+  position: absolute;
+  top: 30%;
+  left: 30%;
+}
