@@ -1,0 +1,48 @@
+.sideColor {
+  background-color: #efc81a;
+  height: 1210px;
+  width: 30%;
+  position: absolute;
+  right: 0;
+  z-index: -1;
+  /* position: absolute; */
+  /* margin-top: -150px; */
+}
+
+.popular {
+  border-left: 25px solid #efc81a;
+  margin-top: 300px;
+}
+
+.frame {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  z-index: -2;
+}
+
+.frame_2 {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  z-index: 20;
+}
+
+.title {
+  left: 40%;
+  position: absolute;
+}
+
+.frameImage {
+  border-radius: 15px;
+}
+
+.recipeName {
+  position: absolute;
+  bottom: 15px;
+  left: 20px;
+}
+
+.children {
+  margin-bottom: 200px;
+}

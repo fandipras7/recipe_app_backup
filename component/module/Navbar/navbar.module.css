@@ -1,0 +1,19 @@
+.navbar {
+  display: flex;
+  width: 100%;
+  height: 100px;
+  align-items: flex-end;
+  padding-left: 100px;
+  padding-right: 100px;
+  background-color: none;
+  /* background-color: blue; */
+  justify-content: space-between;
+}
+
+.links {
+  display: flex;
+  list-style: none;
+  gap: 100px;
+  /* background-color: red;y */
+  width: 100%;
+}

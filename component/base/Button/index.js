@@ -6,8 +6,8 @@ const Button = ({ backgroundColor, border, children, ...props }) => {
   );
 };
 
-Button.defaultProps = {
-  border: "1px solid grey",
-};
+// Button.defaultProps = {
+//   border: "1px solid grey",
+// };
 
 export default Button;
