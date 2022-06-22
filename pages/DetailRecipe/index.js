@@ -32,7 +32,7 @@ const DetailRecipe = () => {
             <div className="col">
               <p className="fs-5">Video step</p>
               <Button backgroundColor="#EFC81A">
-                <i class="bi bi-play-fill"></i>
+                <i className="bi bi-play-fill"></i>
               </Button>
             </div>
           </div>

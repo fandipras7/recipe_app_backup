@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./navbar.module.css";
+import Link from "next/link";
 
 const Navbar = () => {
   return (
@@ -7,8 +8,12 @@ const Navbar = () => {
       <div className="container-fluid">
         <div className="col d-flex">
           <ul className={styles.links}>
-            <li>Home</li>
-            <li>Add Recipe</li>
+            <Link href="/Home">
+              <li>Home</li>
+            </Link>
+            <Link href="/AddRecipe">
+              <li>Add Recipe</li>
+            </Link>
             <li>Profile</li>
           </ul>
           <p>Login</p>

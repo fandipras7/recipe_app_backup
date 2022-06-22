@@ -101,7 +101,7 @@ const Home = () => {
               <div className={styles.frameImage + " col"}>
                 <img className="img-fluid" src="assets/img/chiken_kare.png" alt="" />
               </div>
-              <div className={styles.frameImage + " col"}>
+              {/* <div className={styles.frameImage + " col"}>
                 <img className="img-fluid" src="assets/img/chiken_kare.png" alt="" />
               </div>
               <div className={styles.frameImage + " col"}>
@@ -109,7 +109,7 @@ const Home = () => {
               </div>
               <div className={styles.frameImage + " col"}>
                 <img className="img-fluid" src="assets/img/chiken_kare.png" alt="" />
-              </div>
+              </div> */}
             </div>
           </div>
         </MyLayout>
