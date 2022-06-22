@@ -1,11 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MyLayout from "../../component/layout/MyLayout";
 import styles from "./home.module.css";
 import Input from "../../component/base/Input";
 import Button from "../../component/base/Button";
 import Footer from "../../component/module/Footer";
+import axios from "axios";
+import { useState } from "react";
 
 const Home = () => {
+  const [recipes, setRecipes] = useState([]);
+  async function fetchData() {
+    try {
+      const result = await axios({
+        method: "GET",
+        baseURL: "http://localhost:4000/v1",
+        url: `/recipes`,
+      });
+      const recipes = result.data.data;
+      console.log(recipes);
+      setRecipes([...recipes, recipes]);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <div className="container-fluid position-relative">
@@ -89,18 +112,18 @@ const Home = () => {
               <p className={styles.popular + " fs-3"}>New Recipe</p>
             </div>
             <div className="row row-cols-3 justify-content-center">
-              <div className={styles.frameImage + " col mb-4 position-relative"}>
+              {recipes.map((item) => (
+                <div className={styles.frameImage + " col mb-4 position-relative"}>
+                  <img className="img-fluid" src={item.image} alt="" />
+                  <p className={styles.recipeName + " fs-4"}>{item.title}</p>
+                </div>
+              ))}
+              {/* <div className={styles.frameImage + " col"}>
                 <img className="img-fluid" src="assets/img/chiken_kare.png" alt="" />
-                <p className={styles.recipeName + " fs-4"}>
-                  Chiken <br /> Kare
-                </p>
               </div>
               <div className={styles.frameImage + " col"}>
                 <img className="img-fluid" src="assets/img/chiken_kare.png" alt="" />
-              </div>
-              <div className={styles.frameImage + " col"}>
-                <img className="img-fluid" src="assets/img/chiken_kare.png" alt="" />
-              </div>
+              </div> */}
               {/* <div className={styles.frameImage + " col"}>
                 <img className="img-fluid" src="assets/img/chiken_kare.png" alt="" />
               </div>
