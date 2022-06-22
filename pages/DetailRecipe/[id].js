@@ -10,10 +10,10 @@ import axios from 'axios'
 
 const DetailRecipe = () => {
   const router = useRouter();
-  // const id = router.query.id;
+  const id = router.query.id;
   // console.log(id);
 
-  const [recipes, setRecipes] = useState([]);
+  const [recipes, setRecipes] = useState({});
   async function fetchData(id) {
     try {
       const result = await axios({
@@ -22,16 +22,32 @@ const DetailRecipe = () => {
         url: `/recipes/${id}`,
       });
       const recipes = result.data.data;
-      setRecipes([...recipes, recipes]);
+      setRecipes({...recipes, recipes});
     } catch (error) {
       console.log(error);
     }
   }
 
+  async function deleteRecipe(id) {
+    try {
+    await axios({
+        method: "DELETE",
+        baseURL: "http://localhost:4000/v1",
+        url: `/recipes/${id}`,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  console.log(recipes);
+
   useEffect(() => {
-    fetchData(router.query.id);
+    // console.log(id);
+    console.log(('apakah ini jalan'));
+    console.log(id);
+    fetchData(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [id]);
 
   return (
     <div className="position-relative">
@@ -39,28 +55,50 @@ const DetailRecipe = () => {
       <div className="mb-5">
         <div className="container">
           <div className="row justify-content-center mt-5 text-center">
-            <p className="fs-3">Loream Sandwich</p>
+            <p className="fs-3">{recipes.title}</p>
             <div className={styles.frameImage + "  position-relative"}>
-              <img className="img-fluid" src={recipes.image} alt="" />
-              <div className={styles.frameLike}>
+              <img className="img-fluid" src={recipes.image} alt="" />  
+              {/* <div className={styles.frameLike}>
                 <img src="assets/img/like.png" alt="" />
               </div>
               <div className={styles.frameLampir}>
                 <img src="assets/img/lampikan.png" alt="" />
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="row mt-5">
             <div className="col">
               <p className="fs-5">Ingredients</p>
-              <p>- Capcai</p>
+              {/* <p>- Capcai</p> */}
+              {/* {recipes.ingredients.split(',').map((item)=>(
+                <p>- {item}</p>
+              ))} */}
+              {recipes.ingredients && recipes.ingredients.split(',').map((item)=>(
+                <p>- {item}</p>
+              ))}
             </div>
           </div>
           <div className="row mt-5">
             <div className="col">
               <p className="fs-5">Video step</p>
-              <Button backgroundColor="#EFC81A">
+              <Button onClick={()=>{router.push(recipes.video)}} backgroundColor="#EFC81A">
                 <i className="bi bi-play-fill"></i>
+              </Button>
+            </div>
+          </div>
+
+          <div className="row mt-5">
+            <div className="col">
+              <Button onClick={()=>{
+                deleteRecipe(recipes.id)
+                router.push('/Home')
+              }} backgroundColor="#EFC81A">
+               Delete
+              </Button>
+              <Button onClick={()=>{
+                router.push(`/EditRecipe/${recipes.id}`)
+              }} backgroundColor="#EFC81A">
+               Edit
               </Button>
             </div>
           </div>

@@ -6,8 +6,10 @@ import Button from "../../component/base/Button";
 import Footer from "../../component/module/Footer";
 import axios from "axios";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 const Home = () => {
+  const router = useRouter()
   const [recipes, setRecipes] = useState([]);
   async function fetchData() {
     try {
@@ -114,7 +116,7 @@ const Home = () => {
             <div className="row row-cols-3 justify-content-center">
               {recipes.map((item) => (
                 <div className={styles.frameImage + " col mb-4 position-relative"}>
-                  <img className="img-fluid" src={item.image} alt="" />
+                  <img onClick={()=>{router.push(`/DetailRecipe/${item.id}`)}} className="img-fluid" src={item.image} alt="" />
                   <p className={styles.recipeName + " fs-4"}>{item.title}</p>
                 </div>
               ))}

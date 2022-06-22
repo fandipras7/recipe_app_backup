@@ -4,15 +4,19 @@ import Input from "../../component/base/Input";
 import Button from "../../component/base/Button";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { useEffect } from "react";
 
-const AddRecipe = () => {
+const EditRecipe = () => {
   const router = useRouter();
+  const id = router.query.id;
   const [dataRecipe, setDataRecipe] = useState({
     title: "",
     ingredients: "",
     image: "",
     video: "",
   });
+
+  const [videoTitle, setVideoTitle] = useState("");
 
   const handleChange = (e) => {
     setDataRecipe({
@@ -41,11 +45,11 @@ const AddRecipe = () => {
 
   //   console.log(dataRecipe);
 
-  async function fetchData(dataform) {
+  async function fetchData(dataform, id) {
     try {
-      const result = await axios.post("http://localhost:4000/v1/recipes", dataform, { "content-type": "multipart/form-data" });
+      const result = await axios.put(`http://localhost:4000/v1/recipes/${id}`, dataform, { "content-type": "multipart/form-data" });
       const recipes = result.data.data;
-      console.log(recipes);
+      // console.log(recipes);
     } catch (error) {
       console.log(error);
     }
@@ -58,8 +62,38 @@ const AddRecipe = () => {
     data.append("ingredients", dataRecipe.ingredients);
     data.append("video", dataRecipe.video);
     e.preventDefault();
-    fetchData(data);
+    fetchData(data, id);
   };
+
+  async function fetchDataId(id) {
+    try {
+      const result = await axios({
+        method: "GET",
+        baseURL: "http://localhost:4000/v1",
+        url: `/recipes/${id}`,
+      });
+      const recipes = result.data.data;
+      setDataRecipe({
+        ...dataRecipe,
+        title: recipes.title,
+        ingredients: recipes.ingredients,
+      });
+      setImagePriview(recipes.image);
+      setVideoTitle(recipes.video);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  console.log(dataRecipe);
+
+  useEffect(() => {
+    // console.log(id);
+    console.log("apakah ini jalan");
+    console.log(id);
+    fetchDataId(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   return (
     <>
@@ -75,16 +109,26 @@ const AddRecipe = () => {
           </div>
           <div className="row justify-content-center">
             <div className="col-8 mt-5 text-center">
-              <Input name="title" onChange={handleChange} border="none" width="100%" placeholder="title"></Input>
+              <Input value={dataRecipe.title} name="title" onChange={handleChange} border="none" width="100%" placeholder="title"></Input>
             </div>
           </div>
           <div className="row justify-content-center">
             <div className="col-8 mt-5 text-center">
-              <textarea style={{ height: "250px" }} /*value={dataProduct.description} */ name="ingredients" onChange={handleChange} class="form-control" placeholder="Ingredients" aria-label="With textarea"></textarea>
+              <textarea
+                value={dataRecipe.ingredients}
+                style={{ height: "250px" }}
+                /*value={dataProduct.description} */ name="ingredients"
+                onChange={handleChange}
+                className="form-control"
+                placeholder="Ingredients"
+                aria-label="With textarea"
+              ></textarea>
             </div>
           </div>
           <div className="row">
+            {/* <p>{videoTitle}</p> */}
             <div className="col-8 mt-5 text-center">
+              <label htmlFor="">{videoTitle}</label>
               <input type="file" className="form-control" accept="video/" onChange={(e) => uploadVideo(e)} />
             </div>
           </div>
@@ -92,7 +136,7 @@ const AddRecipe = () => {
             <Button
               onClick={(e) => {
                 handleAddProduct(e);
-                router.push("/Home");
+                router.push(`/DetailRecipe/${id}`);
               }}
               width="20%"
               border="none"
@@ -107,4 +151,4 @@ const AddRecipe = () => {
   );
 };
 
-export default AddRecipe;
+export default EditRecipe;
