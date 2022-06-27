@@ -50,5 +50,41 @@
 .btnSearch {
   position: absolute;
   top: 30%;
-  left: 23%;
+  left: 32%;
+}
+
+.btnRemove {
+  position: absolute;
+  top: 30%;
+  right: 32%;
+}
+
+.dropdown {
+  width: 20%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.dropdown .dropdown_btn {
+  padding: 10px;
+  background-color: #efc81a;
+  box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.06);
+  font-weight: bold;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dropdown .dropdown_content {
+  position: absolute;
+  padding: 15px;
+  background-color: blue;
+  box-shadow: 3px 3px 10px 6px rgba(0, 0, 0, 0.06);
+  font-weight: 500;
+  color: white;
+}
+
+.dropdown .dropdown_content .dropdown_item {
+  padding: 10px;
 }

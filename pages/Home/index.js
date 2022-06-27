@@ -38,7 +38,9 @@ const Home = ({ recipes, pagination }) => {
       </button>
     );
   }
-  console.log(keySearch);
+
+  const option = ["ASC", "DESC"];
+
   // const [recipes, setRecipes] = useState([]);
   // async function fetchData() {
   //   try {
@@ -73,9 +75,19 @@ const Home = ({ recipes, pagination }) => {
                 Discover Recipe <br />& Delicious Food
               </p>
               <div className="position-relative text-center">
-                <Input onChange={(e) => onHandleChange(e)} backgroundColor="light" className="py-3 px-5" placeholder="search restaurant, food"></Input>
+                <Input value={keySearch} onChange={(e) => onHandleChange(e)} backgroundColor="light" className="py-3 px-5" placeholder="search restaurant, food"></Input>
                 <Button onClick={onHandleSearch} backgroundColor="white" border="none" className={styles.btnSearch + " text-center"}>
                   <i className="bi bi-search"></i>
+                </Button>
+                <Button
+                  onClick={() => {
+                    setKeySearch("");
+                  }}
+                  backgroundColor="white"
+                  border="none"
+                  className={styles.btnRemove + " text-center"}
+                >
+                  <i className="bi bi-x"></i>
                 </Button>
               </div>
             </div>
@@ -85,7 +97,24 @@ const Home = ({ recipes, pagination }) => {
           </div>
           <div className="row d-flex flex-column">
             <div className="col">
-              <p className={styles.popular + " fs-3"}>New Recipe</p>
+              <p className={styles.popular + " fs-3"}>Library OF Recipe</p>
+            </div>
+            <div className="row text-center mb-5">
+              <div className="">
+                <select
+                  className="p-2"
+                  style={{ border: "none", backgroundColor: "orange" }}
+                  onChange={(e) => {
+                    e.target.value !== "none" && router.push(`?sortby=${"title"}&sort=${e.target.value}`);
+                  }}
+                  name="sort"
+                  id="sort"
+                >
+                  <option value="none">Sort</option>
+                  <option value="ASC">SortByName(A-Z)</option>
+                  <option value="DESC">sortByName(Z-A)</option>
+                </select>
+              </div>
             </div>
             <div className="row row-cols-3 justify-content-center">
               {recipes.map((item) => (
@@ -113,6 +142,8 @@ export async function getServerSideProps(context) {
   let page = 1;
   let limit = 2;
   let search;
+  let sort;
+  let sortby;
   if (context.query.page || context.query.limit) {
     page = context.query.page;
     limit = context.query.limit;
@@ -121,7 +152,12 @@ export async function getServerSideProps(context) {
   if (context.query.search) {
     search = context.query.search;
   }
-  console.log(page);
+
+  if (context.query.sort && context.query.sortby) {
+    sort = context.query.sort;
+    sortby = context.query.sortby;
+  }
+  console.log(sort);
   const cookie = context.req.headers.cookie;
   if (!cookie) {
     // Router.replace('/login')
@@ -130,7 +166,7 @@ export async function getServerSideProps(context) {
     });
     return {};
   }
-  const { data: RespData } = await axios.get(`http://localhost:4000/v1/recipes?page=${page}&limit=${limit}${search && `&search=${search}`}`, {
+  const { data: RespData } = await axios.get(`http://localhost:4000/v1/recipes?page=${page}&limit=${limit}${search && `&search=${search}`}${sort && `&sortby=${sortby}&sort=${sort}`}`, {
     withCredentials: true,
     headers: {
       Cookie: cookie,
