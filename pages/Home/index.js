@@ -17,7 +17,7 @@ const Home = () => {
         method: "GET",
         baseURL: "http://localhost:4000/v1",
         url: `/recipes`,
-      });
+      }, {withCredentials:true});
       const recipes = result.data.data;
       console.log(recipes);
       setRecipes([...recipes, recipes]);
@@ -120,21 +120,7 @@ const Home = () => {
                   <p className={styles.recipeName + " fs-4"}>{item.title}</p>
                 </div>
               ))}
-              {/* <div className={styles.frameImage + " col"}>
-                <img className="img-fluid" src="assets/img/chiken_kare.png" alt="" />
-              </div>
-              <div className={styles.frameImage + " col"}>
-                <img className="img-fluid" src="assets/img/chiken_kare.png" alt="" />
-              </div> */}
-              {/* <div className={styles.frameImage + " col"}>
-                <img className="img-fluid" src="assets/img/chiken_kare.png" alt="" />
-              </div>
-              <div className={styles.frameImage + " col"}>
-                <img className="img-fluid" src="assets/img/chiken_kare.png" alt="" />
-              </div>
-              <div className={styles.frameImage + " col"}>
-                <img className="img-fluid" src="assets/img/chiken_kare.png" alt="" />
-              </div> */}
+          
             </div>
           </div>
         </MyLayout>
