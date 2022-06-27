@@ -1,0 +1,30 @@
+.background {
+  background-size: cover;
+  background-image: url("../../../public/assets/img/bg_login.png");
+  background-position: center center;
+  overflow-y: hidden;
+}
+
+.login,
+.image {
+  min-height: 100vh;
+  overflow-y: hidden;
+}
+
+.logo {
+  /* width: 20px; */
+  width: 100px;
+  margin: 270px;
+  height: 125px;
+  flood-opacity: 0%;
+}
+.bgcolor {
+  position: relative;
+  width: 200vh;
+  height: 100vh;
+  z-index: 1000;
+  background-color: #efc81a;
+  opacity: 0.7;
+  margin-left: -12px;
+  margin-right: -12px;
+}
