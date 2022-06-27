@@ -46,3 +46,9 @@
 .children {
   margin-bottom: 200px;
 }
+
+.btnSearch {
+  position: absolute;
+  top: 30%;
+  left: 23%;
+}

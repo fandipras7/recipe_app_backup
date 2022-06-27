@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import MyLayout from "../../component/layout/MyLayout";
 import styles from "./home.module.css";
+import Card from "../../component/base/Card";
 import Input from "../../component/base/Input";
 import Button from "../../component/base/Button";
 import Footer from "../../component/module/Footer";
@@ -8,28 +9,58 @@ import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-const Home = () => {
-  const router = useRouter()
-  const [recipes, setRecipes] = useState([]);
-  async function fetchData() {
-    try {
-      const result = await axios({
-        method: "GET",
-        baseURL: "http://localhost:4000/v1",
-        url: `/recipes`,
-      }, {withCredentials:true});
-      const recipes = result.data.data;
-      console.log(recipes);
-      setRecipes([...recipes, recipes]);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+const Home = ({ recipes, pagination }) => {
+  const router = useRouter();
+  const [page, setPage] = useState({
+    page: pagination.page,
+    limit: pagination.limit,
+  });
+  const [keySearch, setKeySearch] = useState("");
 
-  useEffect(() => {
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const onHandleChange = (e) => {
+    setKeySearch((e.target.name = e.target.value));
+  };
+
+  const onHandleSearch = () => {
+    router.push(`?search=${keySearch}`);
+  };
+
+  const buttonPagination = [];
+  for (let i = 0; i < pagination.totalPage; i++) {
+    buttonPagination.push(
+      <button
+        onClick={() => {
+          setPage((current) => ({ ...current, page: i + 1 }));
+          router.push(`?page=${i + 1}&limit=${page.limit}`);
+        }}
+      >
+        {i + 1}
+      </button>
+    );
+  }
+  console.log(keySearch);
+  // const [recipes, setRecipes] = useState([]);
+  // async function fetchData() {
+  //   try {
+  //     const result = await axios({
+  //       method: "GET",
+  //       baseURL: "http://localhost:4000/v1",
+  //       url: `/recipes`,
+  //     }, {withCredentials:true, headers:{
+  //       Cookie:cookie
+  //     }});
+  //     const recipes = result.data.data;
+  //     console.log(recipes);
+  //     setRecipes([...recipes, recipes]);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   // fetchData();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [router.query.page]);
 
   return (
     <>
@@ -41,72 +72,15 @@ const Home = () => {
               <p className="fs-3 fw-bold">
                 Discover Recipe <br />& Delicious Food
               </p>
-              <Input backgroundColor="light" className="p-3" placeholder="search restaurant, food"></Input>
+              <div className="position-relative text-center">
+                <Input onChange={(e) => onHandleChange(e)} backgroundColor="light" className="py-3 px-5" placeholder="search restaurant, food"></Input>
+                <Button onClick={onHandleSearch} backgroundColor="white" border="none" className={styles.btnSearch + " text-center"}>
+                  <i className="bi bi-search"></i>
+                </Button>
+              </div>
             </div>
             <div className="col-6">
               <img className="img-fluid" src="/assets/img/image_1.png" alt="" />
-            </div>
-          </div>
-          <div className="row d-flex flex-column">
-            <div className="col">
-              <p className={styles.popular + " fs-3"}>Popular for you</p>
-            </div>
-            <div className="col position-relative">
-              <div className="row align-items-center">
-                <div className="col-6">
-                  <div>
-                    <img className={styles.img + " img-fluid"} src="assets/img/image_2.png" alt="" />
-                  </div>
-                  <div>
-                    <img className={styles.frame + " img-fluid"} src="assets/img/frame_1.png" alt="" />
-                  </div>
-                </div>
-                <div className="col-6 position-relative">
-                  <div className={styles.title}>
-                    <p className=" fs-4">
-                      Healthy Bone Broth
-                      <br />
-                      Ramen (Quick & Easy) <br />
-                    </p>
-                    <img className="" src="/assets/img/Line.png" alt="" />
-                    <p>Quick + Easy Chicken Bone Broth Ramen- Healthy chicken ramen in a hurry? That’s right!</p>
-                    <Button backgroundColor="#EFC81A" color="white" border="none" className="p-2">
-                      Learn More
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="row d-flex flex-column">
-            <div className="col">
-              <p className={styles.popular + " fs-3"}>New Recipe</p>
-            </div>
-            <div className="col position-relative">
-              <div className="row align-items-center">
-                <div className="col-6">
-                  <div>
-                    <img className=" img-fluid" src="assets/img/kotak.png" alt="" />
-                  </div>
-                  <div>
-                    <img className={styles.frame_2 + " img-fluid"} src="assets/img/image_3.png" alt="" />
-                  </div>
-                </div>
-                <div className="col-6 position-relative">
-                  <div className={styles.title}>
-                    <p className=" fs-4">
-                      Healthy Bone Broth
-                      <br />
-                      Ramen (Quick & Easy) <br />
-                    </p>
-                    <img className="" src="/assets/img/Line.png" alt="" />
-                    <p>Quick + Easy Chicken Bone Broth Ramen- Healthy chicken ramen in a hurry? That’s right!</p>
-                    <Button backgroundColor="#EFC81A" color="white" border="none" className="p-2">
-                      Learn More
-                    </Button>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
           <div className="row d-flex flex-column">
@@ -115,19 +89,60 @@ const Home = () => {
             </div>
             <div className="row row-cols-3 justify-content-center">
               {recipes.map((item) => (
-                <div className={styles.frameImage + " col mb-4 position-relative"}>
-                  <img onClick={()=>{router.push(`/DetailRecipe/${item.id}`)}} className="img-fluid" src={item.image} alt="" />
-                  <p className={styles.recipeName + " fs-4"}>{item.title}</p>
-                </div>
+                <Card
+                  key={item.id}
+                  img={item.image}
+                  title={item.title}
+                  onClick={() => {
+                    router.push(`/DetailRecipe/${item.id}`);
+                  }}
+                ></Card>
               ))}
-          
             </div>
           </div>
+          <div className="text-center mt-5 mb-5">{buttonPagination}</div>
         </MyLayout>
         {/* <Footer></Footer> */}
       </div>
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  // console.log(context);
+  let page = 1;
+  let limit = 2;
+  let search;
+  if (context.query.page || context.query.limit) {
+    page = context.query.page;
+    limit = context.query.limit;
+  }
+
+  if (context.query.search) {
+    search = context.query.search;
+  }
+  console.log(page);
+  const cookie = context.req.headers.cookie;
+  if (!cookie) {
+    // Router.replace('/login')
+    context.res.writeHead(302, {
+      Location: `http://localhost:3000/login`,
+    });
+    return {};
+  }
+  const { data: RespData } = await axios.get(`http://localhost:4000/v1/recipes?page=${page}&limit=${limit}${search && `&search=${search}`}`, {
+    withCredentials: true,
+    headers: {
+      Cookie: cookie,
+    },
+  });
+  // console.log(data);
+  return {
+    props: {
+      recipes: RespData.data,
+      pagination: RespData.pagination,
+    }, // will be passed to the page component as props
+  };
+}
 
 export default Home;

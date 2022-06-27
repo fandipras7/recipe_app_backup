@@ -1,10 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./login.module.css";
 import Label from "../../component/base/Label";
 import Input from "../../component/base/Input";
 import Button from "../../component/base/Button";
+import { useRouter } from "next/router";
+import axios from "axios";
 
 const Login = ({ children }) => {
+  const rounter = useRouter()
+  const [form, setForm] = useState({
+    email: '',
+    password: ''
+})
+const handleChange = (e)=>{
+    setForm({
+        ...form,
+        [e.target.name]: e.target.value
+    })
+}
+const hanldeLogin = (e)=>{
+    e.preventDefault()
+    axios.post('http://localhost:4000/v1/users/login',form, {withCredentials: true} )
+    .then(()=>{
+        alert('login succes')
+        rounter.push('/Home')
+    })
+    .catch(()=>{
+        alert('login gagal')
+    })
+}
+
+console.log(form);
   return (
     <div>
       <div className="container-fluid vh-100">
@@ -18,6 +44,7 @@ const Login = ({ children }) => {
             </div>
           </div>
           <div className="col-6 d-flex flex-column align-items-center justify-content-center">
+            <form onSubmit={hanldeLogin}>
             {children ? (
               children
             ) : (
@@ -25,9 +52,9 @@ const Login = ({ children }) => {
                 <h6>Welcome</h6>
                 <p>Log in into your exiting account</p>
                 <Label width="100%" className="text-start" title="E-mail"></Label>
-                <Input className="p-3" width="100%" border="1px solid #EFC81A" placeholder="examplexxx@gmail.com"></Input>
+                <Input name="email" onChange={(e)=>{handleChange(e)}} className="p-3" width="100%" border="1px solid #EFC81A" placeholder="examplexxx@gmail.com"></Input>
                 <Label width="100%" className="text-start" title="Password"></Label>
-                <Input className="p-3" width="100%" border="1px solid #EFC81A" placeholder="Masukan password"></Input>
+                <Input name="password" onChange={(e)=>{handleChange(e)}}  className="p-3" width="100%" border="1px solid #EFC81A" placeholder="Masukan password"></Input>
                 <div className="mt-4">
                   <td>
                     <input className="form-check-input text-start" type="checkbox" value="" id="flexCheckDefault" />
@@ -43,6 +70,7 @@ const Login = ({ children }) => {
                 <p className="mt-5">Don’t have an account? Sign Up</p>
               </div>
             )}
+            </form>
           </div>
         </div>
       </div>
