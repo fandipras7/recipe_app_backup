@@ -6,6 +6,9 @@ import { useRouter } from "next/router";
 
 const Library = ({ recipes }) => {
   const router = useRouter();
+  if (router.isFallback) {
+    return <h3>loading......</h3>;
+  }
   return (
     <div>
       <MyLayout title="Library">

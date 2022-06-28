@@ -64,13 +64,14 @@ export async function getStaticPaths(context) {
   console.log(paths);
   return {
     paths: paths,
-    fallback: true, // false or 'blocking'
+    fallback: false, // false or 'blocking'
   };
 }
 
 export const getStaticProps = async (context) => {
-  const id = context.params.idlib;
-  const { data: RespData } = await axios.get(`http://localhost:4000/v1/recipes${id}`);
+  const id = context.params.id;
+  console.log(id);
+  const { data: RespData } = await axios.get(`http://localhost:4000/v1/recipes/${id}`);
   return {
     props: {
       recipe: RespData.data,

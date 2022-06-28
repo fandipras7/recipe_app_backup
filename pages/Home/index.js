@@ -76,7 +76,14 @@ const Home = ({ recipes, pagination }) => {
           </div>
           <div className="row d-flex flex-column">
             <div className="col">
-              <p className={styles.popular + " fs-3"}>Library OF Recipe</p>
+              <p
+                onClick={() => {
+                  router.push("/Library");
+                }}
+                className={styles.popular + " fs-3"}
+              >
+                Library OF Recipe
+              </p>
             </div>
             <div className="row text-center mb-5">
               <div className="">
@@ -178,7 +185,5 @@ export async function getServerSideProps(context) {
     }, // will be passed to the page component as props
   };
 }
-
-
 
 export default Home;
