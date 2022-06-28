@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import style from "./add.module.css";
 import MyLayout from "../../component/layout/MyLayout";
 import Input from "../../component/base/Input";
 import Button from "../../component/base/Button";
@@ -43,7 +44,7 @@ const AddRecipe = () => {
 
   async function fetchData(dataform) {
     try {
-      const result = await axios.post("http://localhost:4000/v1/recipes", dataform, { "content-type": "multipart/form-data" });
+      const result = await axios.post("http://localhost:4000/v1/recipes", dataform, { "content-type": "multipart/form-data", withCredentials: true });
       const recipes = result.data.data;
       console.log(recipes);
     } catch (error) {
@@ -67,10 +68,12 @@ const AddRecipe = () => {
         <div className="container mb-5">
           <div className="row justify-content-center">
             <div className="col-8 mt-5 text-center">
-              <div>
-                <img className="img-fluid" src={imagePriview} alt="" />
+              <div className={`${style.image} row`}>
+                <img className="text-center" src={imagePriview} alt="" />
               </div>
-              <input type="file" className="form-control" accept="image/" onChange={(e) => uploadImage(e)} />
+              <div className={style.bingkai}>
+                <input type="file" className={`form-control ${style.inputFile}`} accept="image/" onChange={(e) => uploadImage(e)} />
+              </div>
             </div>
           </div>
           <div className="row justify-content-center">
@@ -83,9 +86,9 @@ const AddRecipe = () => {
               <textarea style={{ height: "250px" }} /*value={dataProduct.description} */ name="ingredients" onChange={handleChange} class="form-control" placeholder="Ingredients" aria-label="With textarea"></textarea>
             </div>
           </div>
-          <div className="row">
-            <div className="col-8 mt-5 text-center">
-              <input type="file" className="form-control" accept="video/" onChange={(e) => uploadVideo(e)} />
+          <div className="row justify-content-center">
+            <div className={`col-8 mt-5`}>
+              <input type="file" className={`form-control`} accept="video/" onChange={(e) => uploadVideo(e)} />
             </div>
           </div>
           <div className="row justify-content-center mt-5">

@@ -41,28 +41,7 @@ const Home = ({ recipes, pagination }) => {
 
   const option = ["ASC", "DESC"];
 
-  // const [recipes, setRecipes] = useState([]);
-  // async function fetchData() {
-  //   try {
-  //     const result = await axios({
-  //       method: "GET",
-  //       baseURL: "http://localhost:4000/v1",
-  //       url: `/recipes`,
-  //     }, {withCredentials:true, headers:{
-  //       Cookie:cookie
-  //     }});
-  //     const recipes = result.data.data;
-  //     console.log(recipes);
-  //     setRecipes([...recipes, recipes]);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   // fetchData();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [router.query.page]);
+  console.log(recipes);
 
   return (
     <>
@@ -157,21 +136,40 @@ export async function getServerSideProps(context) {
     sort = context.query.sort;
     sortby = context.query.sortby;
   }
-  console.log(sort);
+  // console.log(sort);
+  // console.log(sortby);
   const cookie = context.req.headers.cookie;
+  console.log(cookie);
   if (!cookie) {
     // Router.replace('/login')
     context.res.writeHead(302, {
-      Location: `http://localhost:3000/login`,
+      Location: `http://localhost:3000/Auth/Login`,
     });
     return {};
   }
-  const { data: RespData } = await axios.get(`http://localhost:4000/v1/recipes?page=${page}&limit=${limit}${search && `&search=${search}`}${sort && `&sortby=${sortby}&sort=${sort}`}`, {
+  const { data: RespData } = await axios.get(`http://localhost:4000/v1/recipes?page=${page}&limit=${limit}${search && `&search=${search}`}`, {
     withCredentials: true,
     headers: {
       Cookie: cookie,
     },
   });
+
+  if (sort !== undefined && sortby != undefined) {
+    console.log("sort jalan");
+    const { data: RespData } = await axios.get(`http://localhost:4000/v1/recipes?page=${page}&limit=${limit}${sortby && `&sortby=${sortby}`}${sort && `&sort=${sort}`}`, {
+      withCredentials: true,
+      headers: {
+        Cookie: cookie,
+      },
+    });
+    return {
+      props: {
+        recipes: RespData.data,
+        pagination: RespData.pagination,
+      }, // will be passed to the page component as props
+    };
+  }
+
   // console.log(data);
   return {
     props: {
@@ -180,5 +178,7 @@ export async function getServerSideProps(context) {
     }, // will be passed to the page component as props
   };
 }
+
+
 
 export default Home;

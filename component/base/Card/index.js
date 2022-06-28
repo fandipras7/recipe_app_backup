@@ -1,10 +1,12 @@
 import React from "react";
+import style from "./card.module.css";
 
-const Card = ({ img, title, onClick, ...props }) => {
+const Card = ({ img, title, onClick, children, ...props }) => {
   return (
     <>
       <div className="card p-2 mb-5">
-        <div>
+        {children}
+        <div className={style.image}>
           <img className="img-fluid" src={img} alt="" />
         </div>
         <div className="card-body">

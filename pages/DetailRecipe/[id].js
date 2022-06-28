@@ -86,22 +86,6 @@ const DetailRecipe = () => {
               </Button>
             </div>
           </div>
-
-          <div className="row mt-5">
-            <div className="col">
-              <Button onClick={()=>{
-                deleteRecipe(recipes.id)
-                router.push('/Home')
-              }} backgroundColor="#EFC81A">
-               Delete
-              </Button>
-              <Button onClick={()=>{
-                router.push(`/EditRecipe/${recipes.id}`)
-              }} backgroundColor="#EFC81A">
-               Edit
-              </Button>
-            </div>
-          </div>
         </div>
       </div>
       <Footer></Footer>
