@@ -8,8 +8,12 @@ import Footer from "../../component/module/Footer";
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 const Home = ({ recipes, pagination }) => {
+  const { user } = useSelector((state) => state.user);
+
+  console.log(user);
   const router = useRouter();
   const [page, setPage] = useState({
     page: pagination.page,
@@ -143,32 +147,30 @@ export async function getServerSideProps(context) {
     sort = context.query.sort;
     sortby = context.query.sortby;
   }
+  console.log("cek apakah jalan");
   // console.log(sort);
   // console.log(sortby);
-  const cookie = context.req.headers.cookie;
-  console.log(cookie);
-  if (!cookie) {
-    // Router.replace('/login')
-    context.res.writeHead(302, {
-      Location: `http://localhost:3000/Auth/Login`,
-    });
-    return {};
-  }
-  const { data: RespData } = await axios.get(`http://localhost:4000/v1/recipes?page=${page}&limit=${limit}${search && `&search=${search}`}`, {
-    withCredentials: true,
-    headers: {
-      Cookie: cookie,
-    },
-  });
+  // const cookie = context.req.headers.cookie;
+  // console.log(cookie);
+  // if (!cookie) {
+  //   // Router.replace('/login')
+  //   context.res.writeHead(302, {
+  //     Location: `http://localhost:3000/Auth/Login`,
+  //   });
+  //   return {};
+  // }
+
+  // , {
+  //   withCredentials: true,
+  //   headers: {
+  //     Cookie: cookie,
+  //   },
+  // }
+  const { data: RespData } = await axios.get(`http://localhost:4000/v1/recipes?page=${page}&limit=${limit}${search && `&search=${search}`}`);
 
   if (sort !== undefined && sortby != undefined) {
     console.log("sort jalan");
-    const { data: RespData } = await axios.get(`http://localhost:4000/v1/recipes?page=${page}&limit=${limit}${sortby && `&sortby=${sortby}`}${sort && `&sort=${sort}`}`, {
-      withCredentials: true,
-      headers: {
-        Cookie: cookie,
-      },
-    });
+    const { data: RespData } = await axios.get(`http://localhost:4000/v1/recipes?page=${page}&limit=${limit}${sortby && `&sortby=${sortby}`}${sort && `&sort=${sort}`}`);
     return {
       props: {
         recipes: RespData.data,

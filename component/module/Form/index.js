@@ -1,11 +1,14 @@
 import axios from "axios";
 import Router, { useRouter } from "next/router";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import Button from "../../base/Button";
 import Input from "../../base/Input";
 import Label from "../../base/Label";
+import { login } from "../../../pages/redux/action/userAction";
 
 const Form = () => {
+  const dispatch = useDispatch();
   const rounter = useRouter();
   const [form, setForm] = useState({
     email: "",
@@ -17,7 +20,7 @@ const Form = () => {
       [e.target.name]: e.target.value,
     });
   };
-  const hanldeLogin = (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
     axios
       .post("http://localhost:4000/v1/users/login", form, { withCredentials: true })
@@ -31,7 +34,7 @@ const Form = () => {
   };
   return (
     <div className="col-6">
-      <form onSubmit={hanldeLogin}>
+      <form onSubmit={handleLogin}>
         <div className="row vh-100 align-items-center text-center justify-content-center">
           <div className="col-8 text-center">
             <h6>Welcome</h6>
@@ -66,7 +69,7 @@ const Form = () => {
                 <Label width="100%" className="text-start ms-2" title="I agree to terms & conditions"></Label>
               </div>
             </div>
-            <Button border="none" color="white" width="100%" backgroundColor="#EFC81A" className="p-2" title="Log In"></Button>
+            <Button type="submit" border="none" color="white" width="100%" backgroundColor="#EFC81A" className="p-2" title="Log In"></Button>
             <p className="text-end">Forgot Password?</p>
             <p className="mt-5">
               Don’t have an account?{" "}

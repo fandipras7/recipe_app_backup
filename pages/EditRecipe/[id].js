@@ -17,6 +17,8 @@ const EditRecipe = () => {
     video: "",
   });
 
+  const [title, setTitle] = useState('Next')
+
   const [videoTitle, setVideoTitle] = useState("");
 
   const handleChange = (e) => {
@@ -48,8 +50,11 @@ const EditRecipe = () => {
 
   async function fetchData(dataform, id) {
     try {
+      setTitle('Next...')
       const result = await axios.put(`http://localhost:4000/v1/recipes/${id}`, dataform, { "content-type": "multipart/form-data", withCredentials: true });
       const recipes = result.data.data;
+      alert('Edit data success')
+      router.push(`/DetailRecipe/${id}`);
       // console.log(recipes);
     } catch (error) {
       console.log(error);
@@ -142,7 +147,6 @@ const EditRecipe = () => {
             <Button
               onClick={(e) => {
                 handleAddProduct(e);
-                router.push(`/DetailRecipe/${id}`);
               }}
               width="20%"
               border="none"
