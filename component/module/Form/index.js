@@ -1,14 +1,11 @@
 import axios from "axios";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import Button from "../../base/Button";
 import Input from "../../base/Input";
 import Label from "../../base/Label";
-import { login } from "../../../pages/redux/action/userAction";
 
 const Form = () => {
-  const dispatch = useDispatch();
   const rounter = useRouter();
   const [form, setForm] = useState({
     email: "",

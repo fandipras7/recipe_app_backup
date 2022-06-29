@@ -8,12 +8,9 @@ import Footer from "../../component/module/Footer";
 import axios from "axios";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
 
 const Home = ({ recipes, pagination }) => {
-  const { user } = useSelector((state) => state.user);
-
-  console.log(user);
+  // console.log(user);
   const router = useRouter();
   const [page, setPage] = useState({
     page: pagination.page,
